@@ -8,24 +8,24 @@ const {
 
 exports.validate = () => {
   return [
-      body('firstname', 'First name is required and should have at least 3 characters').not().isEmpty().isLength({
-          min: 3,
-          max: 15
-      }),
-      body('lastname', 'Last name is required and should have at least 3 characters').not().isEmpty().isLength({
-          min: 3,
-          max: 15
-      }),
-      body('email', 'Email is required and should be valid').not().isEmpty().normalizeEmail().isEmail(),
-      body('phone', 'Phone number is required').not().isEmpty(),
-      body('password', 'Password is required and it should have atleast 5 characters').not().isEmpty().isLength({
-          min: 5
-      }),
+    body('firstname', 'First name is required and should have at least 3 characters').not().isEmpty().isLength({
+      min: 3,
+      max: 15
+    }),
+    body('lastname', 'Last name is required and should have at least 3 characters').not().isEmpty().isLength({
+      min: 3,
+      max: 15
+    }),
+    body('email', 'Email is required and should be valid').not().isEmpty().normalizeEmail().isEmail(),
+    body('phone', 'Phone number is required').not().isEmpty(),
+    body('password', 'Password is required and it should have atleast 5 characters').not().isEmpty().isLength({
+      min: 5
+    }),
   ]
 }
 
 exports.user_get = function (req, res) {
-  User.findOne({email: req.userData.email}, function (err, user) {
+  User.findOne({ email: req.userData.email }, function (err, user) {
     if (err) {
       return res.status(500).json({
         error: err.message
@@ -105,3 +105,34 @@ exports.user_login = async function (req, res) {
     }
   });
 };
+
+exports.user_uploadPhoto = function (req, res) {
+  User.findOne({
+    email: req.userData.email
+  }, async function (err, user) {
+    if (!user) return res.status(404).send('No user found.');
+    try {
+      if (req.body.image) {
+        user.imageUrl = req.body.image;
+        await     xuser.save(function (err, theUser) {
+          if (err) {
+            return res.status(500).json({
+              error: err.message
+            });
+          } else {
+            return res.status(200).json({
+              message: 'Photo uploaded successfully',
+              user: theUser
+            });
+          }
+        })
+      } else {
+        return res.status(401).send(
+          "No file was uploaded."
+        );
+      }
+    } catch (err) {
+      return res.status(500).send('Could not upload photo')
+    }
+  });
+}

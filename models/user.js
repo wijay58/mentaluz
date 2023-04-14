@@ -11,6 +11,9 @@ let UserSchema = new Schema({
     password: {
         type: mongoose.Schema.Types.String
     },
+    imageUrl: {
+      type: mongoose.Schema.Types.String
+    },
     firstname: {
         type: mongoose.Schema.Types.String
     },
