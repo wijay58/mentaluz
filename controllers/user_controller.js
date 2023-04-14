@@ -114,7 +114,7 @@ exports.user_uploadPhoto = function (req, res) {
     try {
       if (req.body.image) {
         user.imageUrl = req.body.image;
-        await     xuser.save(function (err, theUser) {
+        await user.save(function (err, theUser) {
           if (err) {
             return res.status(500).json({
               error: err.message
