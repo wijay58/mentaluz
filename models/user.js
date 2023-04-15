@@ -20,6 +20,10 @@ let UserSchema = new Schema({
     lastname: {
         type: mongoose.Schema.Types.String
     },
+    businessDescription: {
+        type: mongoose.Schema.Types.String,
+        default: 'Click to edit your business description.'
+    },
     user_type: {
         type: mongoose.Schema.Types.Number,
         default: 0

@@ -45,25 +45,32 @@ exports.user_post = async function (req, res) {
     //         errors: errors.array()
     //     });
     // }
-    let hashedPassword = await bcrypt.hash(req.body.password, 10);
-    let user = new User({
-      firstname: req.body.firstname,
-      lastname: req.body.lastname,
-      email: req.body.email,
-      phone: req.body.phone,
-      user_type: req.body.user_type,
-      password: hashedPassword
-    });
-    user.save(function (err, theUser) {
-      if (err) {
-        return res.status(500).json({
-          error: err.message
+    User.findOne({
+      email: req.body.email
+    }, async function (err, user) {
+      if (user) return res.status(400).send('Email already exists.');
+      else {
+        let hashedPassword = await bcrypt.hash(req.body.password, 10);
+        let user = new User({
+          firstname: req.body.firstname,
+          lastname: req.body.lastname,
+          email: req.body.email,
+          phone: req.body.phone,
+          user_type: req.body.user_type,
+          password: hashedPassword
         });
-      } else {
-        return res.status(200).json({
-          message: 'User created successfully',
-          user: theUser
-        });
+        user.save(function (err, theUser) {
+          if (err) {
+            return res.status(500).json({
+              error: err.message
+            });
+          } else {
+            return res.status(200).json({
+              message: 'User created successfully',
+              user: theUser
+            });
+          }
+        })
       }
     })
   } catch (err) {
@@ -106,33 +113,15 @@ exports.user_login = async function (req, res) {
   });
 };
 
-exports.user_uploadPhoto = function (req, res) {
-  User.findOne({
-    email: req.userData.email
-  }, async function (err, user) {
-    if (!user) return res.status(404).send('No user found.');
-    try {
-      if (req.body.image) {
-        user.imageUrl = req.body.image;
-        await user.save(function (err, theUser) {
-          if (err) {
-            return res.status(500).json({
-              error: err.message
-            });
-          } else {
-            return res.status(200).json({
-              message: 'Photo uploaded successfully',
-              user: theUser
-            });
-          }
-        })
-      } else {
-        return res.status(401).send(
-          "No file was uploaded."
-        );
-      }
-    } catch (err) {
-      return res.status(500).send('Could not upload photo')
+exports.updateUser = function (req, res) {
+  const data = req.body;
+  User.findOneAndUpdate({email: req.userData.email},data, {returnDocument: 'after'}, async function (err, updatedUser) {
+    if (err) return res.status(500).send('Update failed');
+    else {
+      return res.status(200).json({
+        message: 'User updated successfully',
+        user: updatedUser
+      });
     }
   });
 }
