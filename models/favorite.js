@@ -7,7 +7,7 @@ let FavoriteSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId
   },
   task: {
-    type: mongoose.Schema.Types.ObjectIdwwwww
+    type: mongoose.Schema.Types.ObjectId
   },
   response: {
     type: mongoose.Schema.Types.String
