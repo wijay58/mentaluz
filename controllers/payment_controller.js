@@ -22,7 +22,7 @@ exports.checkout = async function (req, res) {
         quantity: 1,
       },
     ],
-    customer_email: req.userData.email,
+    customer_email: req.userData.id,
     mode: 'payment',
     success_url: `${process.env.CLIENT_URL}/payment/success`,
     cancel_url: `${process.env.CLIENT_URL}/payment/failed`,
@@ -64,7 +64,7 @@ exports.stripe_webhook = async function (req, res) {
       break;
     case 'payment_intent.succeeded':
       const checkoutSessionAsyncPaymentSucceeded = event.data.object;
-      User.findOneAndUpdate({ email: req.body.customer_email }, { premium: true }, { returnDocument: 'after' }, async function (err, updatedUser) {
+      User.findByIdAndUpdate((req.body.data.object.customer), { premium: true }, { returnDocument: 'after' }, async function (err, updatedUser) {
         if (err) return res.status(500).send('Update failed');
         else {
           return res.status(200).json({
