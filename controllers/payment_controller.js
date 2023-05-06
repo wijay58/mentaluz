@@ -43,11 +43,15 @@ exports.stripe_webhook = async function (req, res) {
   const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.WEBHOOK_SECRET;
   const payloadString = JSON.stringify(req.body, null, 2);
+  const header = stripe.webhooks.generateTestHeaderString({
+    payload: payloadString,
+    endpointSecret,
+  });
 
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(payloadString, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(payloadString, header, endpointSecret);
   } catch (err) {
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
