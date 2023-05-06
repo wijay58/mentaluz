@@ -22,6 +22,7 @@ exports.checkout = async function (req, res) {
         quantity: 1,
       },
     ],
+    customer_email: req.userData.email,
     metadata: {
       customer_email: req.userData.email,
     },
@@ -66,6 +67,7 @@ exports.stripe_webhook = async function (req, res) {
       break;
     case 'payment_intent.succeeded':
       const checkoutSessionAsyncPaymentSucceeded = event.data.object;
+      console.log(req.body.data)
       User.findByIdAndUpdate((req.body.data.object.metadata.customer_email), { premium: true }, { returnDocument: 'after' }, async function (err, updatedUser) {
         if (err) return res.status(500).send('Update failed');
         else {
