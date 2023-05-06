@@ -22,7 +22,7 @@ exports.checkout = async function (req, res) {
       },
     ],
     mode: 'payment',
-    success_url: `https://mentaluz.com/payment/success/?example=true`,
+    success_url: `https://mentaluz.com/payment/success/?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.CLIENT_URL}/payment/failed`,
   });
 
