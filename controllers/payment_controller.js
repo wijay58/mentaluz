@@ -1,3 +1,4 @@
+const User = require("../models/user");
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 exports.checkout = async function (req, res) {
@@ -22,18 +23,52 @@ exports.checkout = async function (req, res) {
       },
     ],
     mode: 'payment',
-    success_url: `https://mentaluz.com/payment/success/?session_id={CHECKOUT_SESSION_ID}`,
+    success_url: `${process.env.CLIENT_URL}/payment/success`,
     cancel_url: `${process.env.CLIENT_URL}/payment/failed`,
   });
 
   res.status(200).json({ url: session.url });
 }
 
-exports.validate_session = async function (req, res) {
+validate_session = async function (id) {
   try {
-    const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    res.status(200).json({ session });
-  } catch(err) {
-    res.status(500).json({ error: err.message });
+    const session = await stripe.checkout.sessions.retrieve(id);
+    return session;
+  } catch (err) {
+    return false
+  }
+}
+
+exports.stripe_webhook = async function (req, res) {
+  const sig = request.headers['stripe-signature'];
+  const endpointSecret = process.env.WEBHOOK_SECRET;
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+  } catch (err) {
+    return response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  switch (event.type) {
+    case 'checkout.session.async_payment_failed':
+      const checkoutSessionAsyncPaymentFailed = event.data.object;
+      return res.status(400).json({ message: 'Payment failed' });
+      break;
+    case 'checkout.session.async_payment_succeeded':
+      const checkoutSessionAsyncPaymentSucceeded = event.data.object;
+      User.findOneAndUpdate({ email: req.userData.email }, { premium: true }, { returnDocument: 'after' }, async function (err, updatedUser) {
+        if (err) return res.status(500).send('Update failed');
+        else {
+          return res.status(200).json({
+            message: 'Payment Successful',
+            user: updatedUser
+          });
+        }
+      });
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
   }
 }
