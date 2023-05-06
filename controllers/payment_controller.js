@@ -61,7 +61,7 @@ exports.stripe_webhook = async function (req, res) {
       const checkoutSessionAsyncPaymentFailed = event.data.object;
       return res.status(400).json({ message: 'Payment failed' });
       break;
-    case 'checkout.session.async_payment_succeeded':
+    case 'payment_intent.succeeded':
       const checkoutSessionAsyncPaymentSucceeded = event.data.object;
       User.findOneAndUpdate({ email: req.userData.email }, { premium: true }, { returnDocument: 'after' }, async function (err, updatedUser) {
         if (err) return res.status(500).send('Update failed');
