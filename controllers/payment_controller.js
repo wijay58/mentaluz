@@ -45,7 +45,7 @@ exports.stripe_webhook = async function (req, res) {
   const payloadString = JSON.stringify(req.body, null, 2);
   const header = stripe.webhooks.generateTestHeaderString({
     payload: payloadString,
-    endpointSecret,
+    secret: endpointSecret,
   });
 
   let event;
