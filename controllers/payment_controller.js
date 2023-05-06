@@ -22,7 +22,7 @@ exports.checkout = async function (req, res) {
         quantity: 1,
       },
     ],
-    customer_email: req.userData.id,
+    customer: req.userData.id,
     mode: 'payment',
     success_url: `${process.env.CLIENT_URL}/payment/success`,
     cancel_url: `${process.env.CLIENT_URL}/payment/failed`,
