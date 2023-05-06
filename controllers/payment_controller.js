@@ -40,13 +40,13 @@ validate_session = async function (id) {
 }
 
 exports.stripe_webhook = async function (req, res) {
-  const sig = request.headers['stripe-signature'];
+  const sig = req.headers['stripe-signature'];
   const endpointSecret = process.env.WEBHOOK_SECRET;
 
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
   } catch (err) {
     return response.status(400).send(`Webhook Error: ${err.message}`);
   }
