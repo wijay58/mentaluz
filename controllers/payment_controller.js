@@ -23,8 +23,10 @@ exports.checkout = async function (req, res) {
       },
     ],
     customer_email: req.userData.email,
-    metadata: {
-      customer_email: req.userData.email,
+    payment_intent_data: {
+      metadata: {
+        email: req.userData.email,
+      },
     },
     mode: 'payment',
     success_url: `${process.env.CLIENT_URL}/payment/success`,
