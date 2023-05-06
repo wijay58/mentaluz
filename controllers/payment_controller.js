@@ -70,7 +70,7 @@ exports.stripe_webhook = async function (req, res) {
     case 'payment_intent.succeeded':
       const checkoutSessionAsyncPaymentSucceeded = event.data.object;
       console.log(req.body.data)
-      User.findByIdAndUpdate((req.body.data.object.metadata.customer_email), { premium: true }, { returnDocument: 'after' }, async function (err, updatedUser) {
+      User.findByIdAndUpdate((req.body.data.object.metadata.email), { premium: true }, { returnDocument: 'after' }, async function (err, updatedUser) {
         if (err) return res.status(500).send('Update failed');
         else {
           return res.status(200).json({
