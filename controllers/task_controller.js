@@ -20,15 +20,28 @@ exports.create_task = function (req, res) {
 };
 
 exports.get_tasks = function (req, res) {
+  let queryGroup;
   const { group } = req.query;
-  const queryGroup = group.toLowerCase();
-  Task.find({ group: queryGroup }, function (err, tasks) {
-    if (err) {
-      return res.status(500).json({
-        error: err.message
-      });
-    } else {
-      return res.send(tasks)
-    }
-  })
+  if (group) {
+    queryGroup = group.toLowerCase();
+    Task.find({ group: queryGroup }, function (err, tasks) {
+      if (err) {
+        return res.status(500).json({
+          error: err.message
+        });
+      } else {
+        return res.send(tasks)
+      }
+    })
+  } else {
+    Task.find({}, function (err, tasks) {
+      if (err) {
+        return res.status(500).json({
+          error: err.message
+        });
+      } else {
+        return res.send(tasks)
+      }
+    })
+  }
 };
