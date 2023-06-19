@@ -18,6 +18,9 @@ let TaskSchema = new Schema({
   group: {
     type: mongoose.Schema.Types.String
   },
+  specialist: {
+    type: mongoose.Schema.Types.ObjectId
+  }
 }, {
   timestamps: true
 })

@@ -19,6 +19,44 @@ exports.create_task = function (req, res) {
   })
 };
 
+exports.update_task = function (req, res) {
+  Task.findByIdAndUpdate(req.params.id, req.body, {returnDocument: 'after'}, function (err, task) {
+    if (err) {
+      return res.status(500).json({
+        error: err.message
+      });
+    } else {
+      return res.send(task)
+    }
+  })
+};
+
+exports.update_tasks = function (req, res) {
+  Task.updateMany({group:"general"}, req.body, function (err, task) {
+    if (err) {
+      return res.status(500).json({
+        error: err.message
+      });
+    } else {
+      return res.send(task)
+    }
+  })
+};
+
+exports.get_tasks_by_specialist = function (req, res) {
+  const { specialist } = req.query;
+    Task.find({ specialist }, function (err, tasks) {
+      if (err) {
+        return res.status(500).json({
+          error: err.message
+        });
+      } else {
+        return res.send(tasks)
+      }
+    })
+};
+
+
 exports.get_tasks = function (req, res) {
   let queryGroup;
   const { group } = req.query;
