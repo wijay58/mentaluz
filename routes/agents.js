@@ -7,6 +7,8 @@ const instagram_controller = require("../controllers/instagram_controller.js");
 const facebook_controller = require("../controllers/facebook_controller.js");
 const twitter_controller = require("../controllers/twitter_controller.js");
 const email_controller = require("../controllers/email_controller.js");
+const copywriter_controller = require("../controllers/copywriter_controller.js");
+const facetoface_sales_controller = require("../controllers/facetoface_sales_controller.js");
 
 router.post('/chat', checkAuth, youtube_controller.chat);
 
@@ -51,5 +53,35 @@ router.post('/generalReferrals', checkAuth, email_controller.email_referral);
 router.post('/generalCrisis', checkAuth, email_controller.email_crisis_management);
 router.post('/generalPainPoint', checkAuth, email_controller.email_pain_point);
 router.post('/generalPromotion', checkAuth, email_controller.email_product_promotion);
+
+router.post('/salePageHeadlines', checkAuth, copywriter_controller.sales_page_headlines);
+router.post('/productDescriptions', checkAuth, copywriter_controller.product_descriptions);
+router.post('/ctaPhrases', checkAuth, copywriter_controller.cta_phrases);
+router.post('/adCopy', checkAuth, copywriter_controller.ad_copy);
+router.post('/blogPostSEO', checkAuth, copywriter_controller.blog_post_SEO);
+router.post('/blogPostTitles', checkAuth, copywriter_controller.blog_post_titles);
+router.post('/blogPostOutlines', checkAuth, copywriter_controller.blog_post_outlines);
+router.post('/contentUpgrades', checkAuth, copywriter_controller.blog_content_upgrades);
+router.post('/guestPostPitches', checkAuth, copywriter_controller.guest_post_pitches);
+router.post('/promoteBlog', checkAuth, copywriter_controller.promote_blog);
+router.post('/homepageCopy', checkAuth, copywriter_controller.homepage_copy);
+router.post('/aboutUsCopy', checkAuth, copywriter_controller.about_us_copy);
+router.post('/servicesPage', checkAuth, copywriter_controller.services_copy);
+router.post('/reviewsPage', checkAuth, copywriter_controller.reviews_copy);
+router.post('/contactPage', checkAuth, copywriter_controller.contact_page_copy);
+router.post('/pressHeadlines', checkAuth, copywriter_controller.press_headlines);
+router.post('/pressBody', checkAuth, copywriter_controller.press_body);
+
+router.post('/salesOpening', checkAuth, facetoface_sales_controller.opening_techniques);
+router.post('/salesQuestioning', checkAuth, facetoface_sales_controller.questioning_techniques);
+router.post('/salesClosing', checkAuth, facetoface_sales_controller.closing_techniques);
+router.post('/handlingObjections', checkAuth, facetoface_sales_controller.handling_objections);
+router.post('/salesUpselling', checkAuth, facetoface_sales_controller.sales_upselling);
+router.post('/salespersonsLanguage', checkAuth, facetoface_sales_controller.salespersons_body_language);
+router.post('/mirrorTechniques', checkAuth, facetoface_sales_controller.mirror_techniques);
+router.post('/rapportBuilding', checkAuth, facetoface_sales_controller.rapport_building);
+router.post('/establishTrust', checkAuth, facetoface_sales_controller.establish_trust);
+router.post('/maintainRelationships', checkAuth, facetoface_sales_controller.maintain_relationships);
+router.post('/presentationStructure', checkAuth, facetoface_sales_controller.presentation_structure);
 
 module.exports = router;
