@@ -9,6 +9,8 @@ const twitter_controller = require("../controllers/twitter_controller.js");
 const email_controller = require("../controllers/email_controller.js");
 const copywriter_controller = require("../controllers/copywriter_controller.js");
 const facetoface_sales_controller = require("../controllers/facetoface_sales_controller.js");
+const business_coach_controller = require("../controllers/business_coach_controller.js");
+const relationship_coach_controller = require("../controllers/relationship_coach_controller.js");
 
 router.post('/chat', checkAuth, youtube_controller.chat);
 
@@ -83,5 +85,36 @@ router.post('/rapportBuilding', checkAuth, facetoface_sales_controller.rapport_b
 router.post('/establishTrust', checkAuth, facetoface_sales_controller.establish_trust);
 router.post('/maintainRelationships', checkAuth, facetoface_sales_controller.maintain_relationships);
 router.post('/presentationStructure', checkAuth, facetoface_sales_controller.presentation_structure);
+
+router.post('/ideaFinetuning', checkAuth, business_coach_controller.idea_finetuning);
+router.post('/createTeam', checkAuth, business_coach_controller.create_team);
+router.post('/startupStrategy', checkAuth, business_coach_controller.startup_strategy);
+router.post('/ideaGenerator', checkAuth, business_coach_controller.idea_generator);
+router.post('/pricingStrategy', checkAuth, business_coach_controller.pricing_strategy);
+router.post('/createBrand', checkAuth, business_coach_controller.create_brand);
+router.post('/marketStrategy', checkAuth, business_coach_controller.goto_market_strategy);
+router.post('/digitalMarketingStrategy', checkAuth, business_coach_controller.digital_marketing_strategy);
+router.post('/contentMarketing', checkAuth, business_coach_controller.content_marketing);
+router.post('/scarcityPrinciple', checkAuth, business_coach_controller.scarcity_principle);
+router.post('/leanStartup', checkAuth, business_coach_controller.lean_startup);
+router.post('/positiveConditioning', checkAuth, business_coach_controller.positive_conditioning);
+router.post('/businessNames', checkAuth, business_coach_controller.business_names);
+router.post('/businessIdeaGenerator', checkAuth, business_coach_controller.business_idea_generator);
+router.post('/planDevelopment', checkAuth, business_coach_controller.plan_development);
+router.post('/productForecasting', checkAuth, business_coach_controller.product_forecasting);
+
+router.post('/newFriends', checkAuth, relationship_coach_controller.making_new_friends);
+router.post('/maintainFriendships', checkAuth, relationship_coach_controller.making_new_friends);
+router.post('/resolveConflicts', checkAuth, relationship_coach_controller.resolve_conflicts);
+router.post('/writeLetter', checkAuth, relationship_coach_controller.write_letter);
+router.post('/findPartner', checkAuth, relationship_coach_controller.find_partner);
+router.post('/improveRelationship', checkAuth, relationship_coach_controller.improve_relationship);
+router.post('/resolveRomanticConflict', checkAuth, relationship_coach_controller.resolve_romantic_conflict);
+router.post('/dealingWithBreakup', checkAuth, relationship_coach_controller.dealing_with_breakup);
+router.post('/improveCommunication', checkAuth, relationship_coach_controller.improve_communication);
+router.post('/handleConversation', checkAuth, relationship_coach_controller.handle_conversation);
+router.post('/nonverbalCommunication', checkAuth, relationship_coach_controller.nonverbal_communication);
+router.post('/createMessage', checkAuth, relationship_coach_controller.create_message);
+
 
 module.exports = router;
