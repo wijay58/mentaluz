@@ -80,6 +80,68 @@ exports.user_post = async function (req, res) {
   }
 };
 
+exports.user_login_google = async function (req, res) {
+  try {
+    let decoded = jwt.decode(req.body.credential);
+    if (decoded.email_verified == false) return res.status(401).send('Email not verified.');
+    User.findOne({
+      email: decoded.email
+    }, async function (err, user) {
+      if (!user) {
+        let user = new User({
+          firstname: decoded.given_name,
+          lastname: decoded.family_name,
+          email: decoded.email
+        });
+  
+        user.save(function (err, theUser) {
+          if (err) {
+            return res.status(500).json({
+              error: err.message
+            });
+          } else {
+            let token = jwt.sign({
+              id: theUser.id,
+              user_type: theUser.user_type,
+              firstname: theUser.firstname,
+              email: theUser.email
+            }, process.env.SECRET, {
+              expiresIn: 86400 // expires in 24 hours
+            });
+      
+            res.status(200).send({
+              auth: true,
+              token: token,
+              user_type: theUser.user_type,
+              user: theUser
+            });
+          }
+        })
+      } else {
+        let token = jwt.sign({
+          id: user.id,
+          user_type: user.user_type,
+          firstname: user.firstname,
+          email: user.email
+        }, process.env.SECRET, {
+          expiresIn: 86400 // expires in 24 hours
+        });
+  
+        res.status(200).send({
+          auth: true,
+          token: token,
+          user_type: user.user_type,
+          user: user
+        });
+      }
+    });
+  } catch (err) {
+    return res.status(500).json({
+      error: err.message
+    });
+  }
+};
+
 exports.user_login = async function (req, res) {
   User.findOne({
     email: req.body.email

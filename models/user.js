@@ -3,7 +3,8 @@ const Schema = mongoose.Schema;
 
 let UserSchema = new Schema({
   email: {
-    type: mongoose.Schema.Types.String
+    type: mongoose.Schema.Types.String,
+    unique: true
   },
   phone: {
     type: mongoose.Schema.Types.String
@@ -21,7 +22,8 @@ let UserSchema = new Schema({
     type: mongoose.Schema.Types.String
   },
   imageUrl: {
-    type: mongoose.Schema.Types.String
+    type: mongoose.Schema.Types.String,
+    default: 'mentaluz-dev/joa2dnbj9lji0jbvr72x.png'
   },
   firstname: {
     type: mongoose.Schema.Types.String
