@@ -3,22 +3,23 @@ const axios = require('axios');
 
 exports.chat = async function (req, res) {
   const { message, conversation } = req.body;
-  
-  conversation.push({ "role": "user", "content": message });
 
-  const data = {
-    "model": "gpt-3.5-turbo",
-    "messages": conversation
+  try {
+    conversation.push({ "role": "user", "content": message });
+
+    const data = {
+      "model": "gpt-3.5-turbo",
+      "messages": conversation
+    }
+
+    const response = await helper.openAIRequest(data);
+    conversation.push(response);
+    return res.status(200).json({ message: response.content, conversation });
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Internal Server Error, Please try again." });
   }
-
-  axios.post("https://api.openai.com/v1/chat/completions", data, { headers: { 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` } })
-    .then(response => {
-      conversation.push(response.data.choices[0].message);
-      return res.status(200).json({ message: response.data.choices[0].message.content, conversation });
-    })
-    .catch(error => {
-      return res.status(500).json({ message: "Internal Server Error, Please try again." });
-    })
 }
 
 exports.youtube_title = async function (req, res) {
